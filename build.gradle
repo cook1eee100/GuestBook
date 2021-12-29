@@ -1,8 +1,15 @@
+buildscript{
+    ext{
+        queryDslVersion="5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'war'
+    // id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'     // springboot 2.5.x 대 querydsl 사용 시 추가
 }
 
 group = 'org.zerock'
@@ -28,8 +35,23 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'       // maria DB
+    implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'      // 기본 객체
+
+    // implementation 'com.querydsl:querydsl-jpa'      // springboot 2.5.x 대 querydsl 사용 시 추가
+
+    // springboot 2.6.x 대 querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor(
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
+            )
 }
 
 test {
     useJUnitPlatform()
 }
+
